@@ -1,6 +1,7 @@
 package com.Library_Market.service;
 
 import com.Library_Market.entity.Venta;
+import com.Library_Market.helpers.validaciones.ValidacionVenta;
 import com.Library_Market.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,26 @@ public class VentaService {
 
     // Guardar una nueva venta
     public Venta saveVenta(Venta venta) {
+        // Realizar las validaciones antes de guardar la venta
+        ValidacionVenta.validarVenta(
+                venta.getCliente().getIdcliente(),
+                venta.getLibro().getIdlibro(),
+                venta.getCantidad(),
+                venta.getFechaventa()
+        );
         return ventaRepository.save(venta);
     }
 
     // Actualizar una venta
     public Venta updateVenta(Venta venta) throws Exception {
+        // Realizar las validaciones antes de actualizar la venta
+        ValidacionVenta.validarVenta(
+                venta.getCliente().getIdcliente(),
+                venta.getLibro().getIdlibro(),
+                venta.getCantidad(),
+                venta.getFechaventa()
+        );
+
         Venta ventaExistente = ventaRepository.findById(venta.getIdventa())
                 .orElseThrow(() -> new RuntimeException("No se encontró la venta con id: " + venta.getIdventa()));
 

@@ -1,6 +1,7 @@
 package com.Library_Market.service;
 
 import com.Library_Market.entity.Libro;
+import com.Library_Market.helpers.validaciones.ValidacionLibro;
 import com.Library_Market.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,32 @@ public class LibroService {
 
     // Guardar un nuevo libro
     public Libro saveLibro(Libro libro) {
+        // Validar los datos del libro antes de guardarlo
+        ValidacionLibro.validarLibro(
+                libro.getTitulo(),
+                libro.getPrecio(),
+                libro.getPaginas(),
+                libro.getAutor().getIdautor(),
+                libro.getCategoria().getIdcategoria(),
+                libro.getDescripcion(),
+                libro.getCalificacion()
+        );
         return libroRepository.save(libro);
     }
 
     // Actualizar un libro
     public Libro updateLibro(Libro libro) throws Exception {
+        // Validar los datos del libro antes de actualizarlo
+        ValidacionLibro.validarLibro(
+                libro.getTitulo(),
+                libro.getPrecio(),
+                libro.getPaginas(),
+                libro.getAutor().getIdautor(),
+                libro.getCategoria().getIdcategoria(),
+                libro.getDescripcion(),
+                libro.getCalificacion()
+        );
+
         Libro libroExistente = libroRepository.findById(libro.getIdlibro())
                 .orElseThrow(() -> new RuntimeException("No se encontró el libro con id: " + libro.getIdlibro()));
 
@@ -61,6 +83,7 @@ public class LibroService {
         libroRepository.deleteById(id);
     }
 
+    // Obtener libros por categoría
     public List<Libro> getLibrosByCategoria(Integer idCategoria) {
         return libroRepository.findByCategoria_Idcategoria(idCategoria);
     }

@@ -1,6 +1,7 @@
 package com.Library_Market.service;
 
 import com.Library_Market.entity.Autor;
+import com.Library_Market.helpers.validaciones.ValidacionAutor;
 import com.Library_Market.repository.AutorRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,18 @@ public class AutorService {
 
     // Guardar un nuevo autor
     public Object saveAutor(Autor autor) {
+        // Validar los datos del autor antes de guardarlo
+        ValidacionAutor.validarAutor(autor.getNombre(), autor.getApellido(), autor.getNacionalidad());
         return autorRepository.save(autor);
     }
 
     // Actualizar un autor
     public Autor updateAutor(@NotNull Autor autor) throws Throwable {
-        Autor autorExistente = (Autor) autorRepository.findById(autor.getIdautor())
-                .orElseThrow(() -> new RuntimeException("No se encontro el id: " + autor.getIdautor()));
+        // Validar los datos del autor antes de actualizarlo
+        ValidacionAutor.validarAutor(autor.getNombre(), autor.getApellido(), autor.getNacionalidad());
+
+        Autor autorExistente = autorRepository.findById(autor.getIdautor())
+                .orElseThrow(() -> new RuntimeException("No se encontró el id: " + autor.getIdautor()));
 
         if (autor.getNombre() != null) {
             autorExistente.setNombre(autor.getNombre());
@@ -45,9 +51,10 @@ public class AutorService {
             autorExistente.setNacionalidad(autor.getNacionalidad());
         }
 
-        return (Autor) saveAutor(autorExistente);
+        return autorRepository.save(autorExistente);
     }
 
+    // Eliminar un autor
     public void deleteAutor(Integer id) {
         autorRepository.deleteById(id);
     }

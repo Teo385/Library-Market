@@ -1,6 +1,7 @@
 package com.Library_Market.service;
 
 import com.Library_Market.entity.Categoria;
+import com.Library_Market.helpers.validaciones.ValidacionCategoria;
 import com.Library_Market.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,16 @@ public class CategoriaService {
 
     // Guardar una nueva categoría
     public Categoria saveCategoria(Categoria categoria) {
+        // Validar los datos de la categoría antes de guardarla
+        ValidacionCategoria.validarCategoria(categoria.getNombre());
         return categoriaRepository.save(categoria);
     }
 
     // Actualizar una categoría
     public Categoria updateCategoria(Categoria categoria) throws Exception {
+        // Validar los datos de la categoría antes de actualizarla
+        ValidacionCategoria.validarCategoria(categoria.getNombre());
+
         Categoria categoriaExistente = categoriaRepository.findById(categoria.getIdcategoria())
                 .orElseThrow(() -> new RuntimeException("No se encontró la categoría con id: " + categoria.getIdcategoria()));
 

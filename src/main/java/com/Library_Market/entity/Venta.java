@@ -3,6 +3,8 @@ package com.Library_Market.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -23,7 +25,7 @@ public class Venta {
     private Integer idlibro;
 
     @Column(name = "fecha_venta")
-    private LocalDateTime fechaventa;
+    private LocalDate fechaventa;
 
     private Integer cantidad;
 
@@ -64,11 +66,11 @@ public class Venta {
         this.idlibro = idlibro;
     }
 
-    public LocalDateTime getFechaventa() {
+    public LocalDate getFechaventa() {
         return fechaventa;
     }
 
-    public void setFechaventa(LocalDateTime fechaventa) {
+    public void setFechaventa(LocalDate fechaventa) {
         this.fechaventa = fechaventa;
     }
 

@@ -1,6 +1,7 @@
 package com.Library_Market.service;
 
 import com.Library_Market.entity.Cliente;
+import com.Library_Market.helpers.validaciones.ValidacionCliente;
 import com.Library_Market.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,16 @@ public class ClienteService {
 
     // Guardar un nuevo cliente
     public Cliente saveCliente(Cliente cliente) {
+        // Validar los datos del cliente antes de guardarlo
+        ValidacionCliente.validarCliente(cliente.getNombre(), cliente.getEmail(), cliente.getDireccion(), cliente.getTelefono(), cliente.getContrasena());
         return clienteRepository.save(cliente);
     }
 
     // Actualizar un cliente
     public Cliente updateCliente(Cliente cliente) throws Exception {
+        // Validar los datos del cliente antes de actualizarlo
+        ValidacionCliente.validarCliente(cliente.getNombre(), cliente.getEmail(), cliente.getDireccion(), cliente.getTelefono(), cliente.getContrasena());
+
         Cliente clienteExistente = clienteRepository.findById(cliente.getIdcliente())
                 .orElseThrow(() -> new RuntimeException("No se encontró el cliente con id: " + cliente.getIdcliente()));
 
