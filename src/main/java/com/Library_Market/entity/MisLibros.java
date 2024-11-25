@@ -1,8 +1,11 @@
 package com.Library_Market.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "mis_libros")
 public class MisLibros {
@@ -12,6 +15,7 @@ public class MisLibros {
     @Column(name = "id")
     private Integer id;
 
+    @JsonManagedReference("libro-MisLibros")
     @ManyToOne
     @JoinColumn(name = "id_libro", nullable = false)
     private Libro libro;
@@ -25,7 +29,7 @@ public class MisLibros {
     @Column(name = "estado")
     private String estado; // Ejemplo de un campo adicional: "Leído", "No leído", "Leyendo"
 
-
+    @JsonManagedReference("cliente-MisLibros")
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;  // Relación con Cliente

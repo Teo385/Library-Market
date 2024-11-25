@@ -1,10 +1,13 @@
 package com.Library_Market.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name="clientes")
 @Entity
 public class Cliente {
@@ -24,13 +27,15 @@ public class Cliente {
 
     private String contrasena;
 
+    @JsonBackReference("ventas-cliente")
     @OneToMany(mappedBy = "idventa")
     private List<Venta> ventas;
 
+    @JsonBackReference("misLibros-cliente")
     @OneToMany(mappedBy = "cliente")
     private List<MisLibros> misLibros;
 
-
+    @JsonBackReference("deseos-cliente")
     @OneToMany(mappedBy = "cliente")
     private List<Deseos> deseos;  // Relación con la tabla Deseos
 

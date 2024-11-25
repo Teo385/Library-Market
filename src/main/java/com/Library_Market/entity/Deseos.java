@@ -1,9 +1,11 @@
 package com.Library_Market.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "deseos")
 @Entity
 public class Deseos {
@@ -13,10 +15,12 @@ public class Deseos {
     @Column(name = "id")
     private Integer id;  // Clave primaria
 
+    @JsonManagedReference("cliente-deseos")
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;  // Relación con Cliente
 
+    @JsonManagedReference("libro-deseos")
     @ManyToOne
     @JoinColumn(name = "id_libro")
     private Libro libro;  // Relación con Libro
@@ -24,8 +28,6 @@ public class Deseos {
     @Column(name = "estado")
     private String estado;  // Estado del deseo (ejemplo: "pendiente", "comprado", etc.)
 
-    @Column(name = "fecha_agregado")
-    private LocalDate fechaAgregado;  // Fecha en que el libro fue agregado a la lista de deseos
 
     @Column(name = "nota")
     private String nota;  // Nota personal del cliente sobre el libro
@@ -62,14 +64,6 @@ public class Deseos {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public LocalDate getFechaAgregado() {
-        return fechaAgregado;
-    }
-
-    public void setFechaAgregado(LocalDate fechaAgregado) {
-        this.fechaAgregado = fechaAgregado;
     }
 
     public String getNota() {

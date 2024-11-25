@@ -1,9 +1,12 @@
 package com.Library_Market.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "ventas")
 public class Venta {
@@ -24,10 +27,12 @@ public class Venta {
 
     private Integer cantidad;
 
+    @JsonManagedReference("cliente-venta")
     @ManyToOne
     @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
     private Cliente cliente;
 
+    @JsonManagedReference("libro-venta")
     @ManyToOne
     @JoinColumn(name = "id_libro", insertable = false, updatable = false)
     private Libro libro;

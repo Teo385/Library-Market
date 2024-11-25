@@ -1,10 +1,13 @@
 package com.Library_Market.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name="autores")
 public class Autor {
@@ -20,6 +23,7 @@ public class Autor {
 
     private String nacionalidad;
 
+    @JsonBackReference("categoria-libros")
     @OneToMany(mappedBy = "autor")
     private List<Libro> libros;
 

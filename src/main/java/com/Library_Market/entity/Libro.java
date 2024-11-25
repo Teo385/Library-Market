@@ -1,8 +1,13 @@
 package com.Library_Market.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "libros")
 public class Libro {
@@ -30,20 +35,25 @@ public class Libro {
 
     private String img;
 
+    @JsonManagedReference("categoria-libro")
     @ManyToOne
     @JoinColumn(name = "id_categoria", insertable = false, updatable = false)
     private Categoria categoria;
 
     @ManyToOne
+    @JsonManagedReference("autor-libro")
     @JoinColumn(name = "id_autor", insertable = false, updatable = false)
     private Autor autor;
 
+    @JsonBackReference("ventas-libro")
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Venta> ventas;
 
+    @JsonBackReference("misLibros-libro")
     @OneToMany(mappedBy = "libro")
     private List<MisLibros> misLibros;
 
+    @JsonBackReference("deseos-libro")
     @OneToMany(mappedBy = "libro")
     private List<Deseos> deseos;  // Relación con la tabla Deseos
 
